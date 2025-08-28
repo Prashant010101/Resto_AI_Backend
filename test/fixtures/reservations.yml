@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  restaurant: one
+  reservation_date: 2025-08-25
+  reservation_time: 2025-08-25 15:22:28
+  party_size: 1
+  status: MyString
+
+two:
+  user: two
+  restaurant: two
+  reservation_date: 2025-08-25
+  reservation_time: 2025-08-25 15:22:28
+  party_size: 1
+  status: MyString

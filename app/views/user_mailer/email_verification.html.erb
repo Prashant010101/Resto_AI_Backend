@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Verify Your Email</title>
+  <style>
+    /* Reset some default styles */
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #555;
+      margin: 20px 0;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #ff7f50; /* Warm Coral */
+      color: white !important;
+      padding: 15px 30px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 25px;
+      transition: background-color 0.25s ease;
+    }
+    .btn:hover {
+      background-color: #e76a3c;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #999999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Verify Your Email Address</h1>
+    <p>Hi <%= @user.name %>,</p>
+    <p>Thank you for signing up! Please click the button below to verify your email address and activate your account.</p>
+    <a href="<%= verify_email_url(token: @user.email_verification_token) %>" class="btn" target="_blank" rel="noopener">Verify Email</a>
+    <p>If you didn’t create an account with us, you can ignore this email safely.</p>
+    <div class="footer">
+      &copy; <%= Time.now.year %> YourAppName. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>
