@@ -1,12 +1,14 @@
 class User < ApplicationRecord
   has_many :reservations, dependent: :destroy
   has_many :chatbot_logs, dependent: :destroy
+  has_many :restaurants, dependent: :destroy
 
   has_secure_password
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
-  validates :role, inclusion: { in: %w[customer admin], message: "%{value} is not a valid role" }
+
+  enum :role, { customer: 0, admin: 1, merchant: 2 }
 
   def generate_email_verification_token
     begin

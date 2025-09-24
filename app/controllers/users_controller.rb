@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
-  before_action :authorize_request, only: [ :update, :destroy, :show ]
+  skip_before_action :authorize_request, only: [ :index, :create, :verify_email ]
+  before_action :authorize_request, except: [ :index, :create, :verify_email ]
+  before_action :authorize_admin_or_self, only: [ :update, :destroy, :show ]
   def index
     @users = User.all
     if @users.any?
-      render json: { users: @users }, status: :ok
+      render json: @users, each_serializer: UserSerializer, status: :ok
     else
       render json: { message: "No data found" }, status: :not_found
     end
@@ -12,10 +14,14 @@ class UsersController < ApplicationController
   def show
     @user = User.find_by(id: params[:id])
     if @user
-      render json: { user: @user }, status: :ok
+      render json: @user, serializer: UserSerializer, status: :ok
     else
       render json: { message: "User not found" }, status: :not_found
     end
+  end
+
+  def profile
+    render json: @current_user, serializer: UserSerializer, status: :ok
   end
 
   def create
@@ -66,5 +72,16 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :phone_number, :role)
+  end
+
+  def authorize_admin_or_self
+    user = User.find_by(id: params[:id])
+    unless user
+      render json: { error: "User not found" }, status: :not_found and return
+    end
+
+    unless @current_user.role == "admin" || @current_user.id == user.id
+      render json: { error: "Not authorized to perform this action" }, status: :forbidden and return
+    end
   end
 end
